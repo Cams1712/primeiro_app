@@ -2,6 +2,9 @@
 
 import 'package:flutter/material.dart';
 
+//Imports que vem das minhas files
+import 'package:primeiro_app/question.dart';
+
 /*void main() {
 //É boa pratica usar const para chamar construtores que são const
   const myApp = MyApp();
@@ -16,20 +19,20 @@ class MyApp extends StatefulWidget {
   //Criar esse overide para que o flutter saiba que tem que se conectar com o MyAppState e mudar algo
   @override
   State<StatefulWidget> createState() {
-    return MyAppState();
+    return _MyAppState();
   }
 }
 
 //Classes não devem ter parametros
 //Isso permite que a classe seja usada como um widget
-class MyAppState extends State<MyApp> {
-  var index = 0;
+class _MyAppState extends State<MyApp> {
+  var _index = 0; //Esse _ faz com que eles fiquem privados, não publicos
   var perguntas = ["Qual seu animal favorito?", "Qual sua cor favorita?"];
 
   //Para uma função que será usada nos widgets temos que colocar como void, sem parametros e DENTRO DA CLASSE QUE ESTÃO OS WIDGETS
-  void respostaPergunta() {
+  void _respostaPergunta() {
     setState(() {
-      index < 1 ? index++ : index;
+      _index < 1 ? _index++ : _index;
     });
     debugPrint("Escolha feita");
   }
@@ -52,7 +55,7 @@ class MyAppState extends State<MyApp> {
         ),
         //O body so pode ter um elemento, por isso temos que colocar algo dentro dele que permite colocar mais de um elemento
         body: Column(children: [
-          Text(perguntas[index]),
+          Question(perguntas[_index]),
           ElevatedButton(
             //Botão
             //O que acontece quando aprta o btn
@@ -70,7 +73,7 @@ class MyAppState extends State<MyApp> {
           ),
           ElevatedButton(
             onPressed:
-                respostaPergunta, //Para passar uma função sem que ela seja executada na hora em que esta sendo criada a tela, temos que passar sem os (), assim dart entende que ele tem que chamar esse nome de função quando alguem clicar no btn
+                _respostaPergunta, //Para passar uma função sem que ela seja executada na hora em que esta sendo criada a tela, temos que passar sem os (), assim dart entende que ele tem que chamar esse nome de função quando alguem clicar no btn
             child: Text("Resposta 3"),
           )
         ]),
