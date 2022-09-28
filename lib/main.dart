@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 //Imports que vem das minhas files
 import 'package:primeiro_app/question.dart';
+import 'package:primeiro_app/respostas.dart';
 
 /*void main() {
 //É boa pratica usar const para chamar construtores que são const
@@ -27,14 +28,35 @@ class MyApp extends StatefulWidget {
 //Isso permite que a classe seja usada como um widget
 class _MyAppState extends State<MyApp> {
   var _index = 0; //Esse _ faz com que eles fiquem privados, não publicos
-  var perguntas = ["Qual seu animal favorito?", "Qual sua cor favorita?"];
+  var perguntas = [
+    {
+      "pergunta": "Qual seu animal favorito?",
+      "respostas": [
+        "Cachorro",
+        "Gato",
+        "Passarinho",
+        "Girafa",
+        "Cavalo",
+        "Urso",
+      ]
+    },
+    {
+      "pergunta": "Qual sua cor favorita?",
+      "respostas": [
+        "Branco",
+        "Preto",
+        "Rosa",
+        "Laranja",
+        "Amarelo",
+      ]
+    }
+  ];
 
   //Para uma função que será usada nos widgets temos que colocar como void, sem parametros e DENTRO DA CLASSE QUE ESTÃO OS WIDGETS
   void _respostaPergunta() {
     setState(() {
-      _index < 1 ? _index++ : _index;
+      _index < 1 ? _index++ : _index--;
     });
-    debugPrint("Escolha feita");
   }
 
 //Construtor
@@ -54,29 +76,25 @@ class _MyAppState extends State<MyApp> {
           backgroundColor: Colors.black,
         ),
         //O body so pode ter um elemento, por isso temos que colocar algo dentro dele que permite colocar mais de um elemento
-        body: Column(children: [
-          Question(perguntas[_index]),
-          ElevatedButton(
-            //Botão
-            //O que acontece quando aprta o btn
-            onPressed: () => debugPrint("Escolheu resposta 1!"),
-            child: Text("Resposta 1"), //O que estará escrito no btn
-          ),
-          ElevatedButton(
-            //Como esta null o flutter entende que ele não pode ser precionado, então ele coloca como not editable
-            onPressed: () {
-              //Colocar a logica que desejar
-              //Lembrar que esse tipo de função SÓ pode ser usada 1 vez, pois é uma função anonima
-              debugPrint("Escolhei resposta 2!");
-            },
-            child: Text("Resposta 2"),
-          ),
-          ElevatedButton(
-            onPressed:
-                _respostaPergunta, //Para passar uma função sem que ela seja executada na hora em que esta sendo criada a tela, temos que passar sem os (), assim dart entende que ele tem que chamar esse nome de função quando alguem clicar no btn
-            child: Text("Resposta 3"),
-          )
-        ]),
+        body: Column(
+          children: [
+            Question(perguntas[_index]["pergunta"] as String),
+            Padding(
+              padding: EdgeInsets.all(15),
+              child: Column(
+                children: [
+                  ...(perguntas[_index]["respostas"] as List<String>)
+                      .map((respostas) {
+                    return Resposta(
+                      _respostaPergunta,
+                      respostas,
+                    );
+                  }).toList(),
+                ],
+              ),
+            ),
+          ],
+        ),
       ), //Home faz com que o flutter mostre essa tela em primeiro lugar
     );
     return tela; //Faz o basico setup para os widget que vc criar para que apareca na tela
